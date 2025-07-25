@@ -20,10 +20,19 @@ Makefile                // 构建脚本
 README.md               // 项目说明
 ```
 
-## 编译方法
+
+
+## 如果要清除原来配置：
+```bash
+make clean && make
+```
+
+## 直接编译
 ```bash
 make
 ```
+
+
 
 ## 运行方法
 ```bash
@@ -31,7 +40,7 @@ make
 ```
 
 ## AI模型配置
-请在 `config/ai_models.json` 中配置AI模型信息，支持多模型扩展。
+请在 `config/ai_models.json` 中配置AI模型信息，支持多模型扩展。注意：此处默认调用第一个AI模型，如需切换模型，请将目标模型移至最前面。
 
 ## 功能特性
 - 支持GaussDB EXPLAIN(ANALYZE)结果分析
