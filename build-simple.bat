@@ -1,8 +1,8 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM AIAgent Windows 编译脚本
-REM 使用方法: build.bat [选项]
+REM AIAgent Windows 简化编译脚本
+REM 专门解决静态链接依赖问题
 
 set "SCRIPT_DIR=%~dp0"
 cd /d "%SCRIPT_DIR%"
@@ -78,19 +78,54 @@ call :print_success "nlohmann/json 库: ✓"
 call :print_success "所有依赖检查通过！"
 goto :eof
 
+REM 动态链接编译（推荐）
+:compile_dynamic
+set "target_name=%~1"
+
+call :print_info "编译动态链接版本（推荐）..."
+
+%CXX% -std=c++11 -Wall -Wextra -O2 -DNDEBUG -Iinclude -Ithird_party -o "%target_name%.exe" main.cpp src\agent1_input\agent1_input.cpp src\agent2_diagnose\agent2_diagnose.cpp src\agent3_strategy\agent3_strategy.cpp src\agent4_report\agent4_report.cpp src\agent5_interactive\agent5_interactive.cpp src\ai_engine\ai_engine.cpp src\utils\utils.cpp -lcurl -lssl -lcrypto -lz -ldl -lpthread
+
+if %errorlevel% equ 0 (
+    call :print_success "动态链接编译成功！"
+    exit /b 0
+) else (
+    exit /b 1
+)
+
+REM 静态链接编译（仅基本功能）
+:compile_static_basic
+set "target_name=%~1"
+
+call :print_info "尝试静态链接编译（仅基本功能）..."
+
+%CXX% -std=c++11 -Wall -Wextra -O2 -DNDEBUG -static -Iinclude -Ithird_party -o "%target_name%.exe" main.cpp src\agent1_input\agent1_input.cpp src\agent2_diagnose\agent2_diagnose.cpp src\agent3_strategy\agent3_strategy.cpp src\agent4_report\agent4_report.cpp src\agent5_interactive\agent5_interactive.cpp src\ai_engine\ai_engine.cpp src\utils\utils.cpp -lcurl -lssl -lcrypto -lz -ldl -lpthread
+
+if %errorlevel% equ 0 (
+    call :print_success "静态链接编译成功！"
+    exit /b 0
+) else (
+    exit /b 1
+)
+
 REM 编译函数
 :compile
 set "build_type=%~1"
 set "target_name=%~2"
 
-call :print_info "开始编译 %build_type% 版本..."
-
 if "%build_type%"=="dynamic" (
-    %CXX% -std=c++11 -Wall -Wextra -O2 -DNDEBUG -Iinclude -Ithird_party -o "%target_name%.exe" main.cpp src\agent1_input\agent1_input.cpp src\agent2_diagnose\agent2_diagnose.cpp src\agent3_strategy\agent3_strategy.cpp src\agent4_report\agent4_report.cpp src\agent5_interactive\agent5_interactive.cpp src\ai_engine\ai_engine.cpp src\utils\utils.cpp -lcurl -lssl -lcrypto -lz -ldl -lpthread
+    call :compile_dynamic "%target_name%"
 ) else if "%build_type%"=="static" (
-    %CXX% -std=c++11 -Wall -Wextra -O2 -DNDEBUG -static -Iinclude -Ithird_party -o "%target_name%.exe" main.cpp src\agent1_input\agent1_input.cpp src\agent2_diagnose\agent2_diagnose.cpp src\agent3_strategy\agent3_strategy.cpp src\agent4_report\agent4_report.cpp src\agent5_interactive\agent5_interactive.cpp src\ai_engine\ai_engine.cpp src\utils\utils.cpp -lcurl -lssl -lcrypto -lz -ldl -lpthread
-) else if "%build_type%"=="debug" (
-    %CXX% -std=c++11 -Wall -Wextra -g -DDEBUG -O0 -Iinclude -Ithird_party -o "%target_name%.exe" main.cpp src\agent1_input\agent1_input.cpp src\agent2_diagnose\agent2_diagnose.cpp src\agent3_strategy\agent3_strategy.cpp src\agent4_report\agent4_report.cpp src\agent5_interactive\agent5_interactive.cpp src\ai_engine\ai_engine.cpp src\utils\utils.cpp -lcurl -lssl -lcrypto -lz -ldl -lpthread
+    call :compile_static_basic "%target_name%"
+) else if "%build_type%"=="auto" (
+    REM 先尝试静态链接，失败则使用动态链接
+    call :compile_static_basic "%target_name%"
+    if %errorlevel% neq 0 (
+        call :print_warning "静态链接失败，使用动态链接..."
+        call :compile_dynamic "%target_name%"
+    ) else (
+        call :print_info "静态链接成功！"
+    )
 ) else (
     call :print_error "未知的编译类型: %build_type%"
     exit /b 1
@@ -140,21 +175,21 @@ goto :eof
 
 REM 显示帮助信息
 :show_help
-echo AIAgent Windows 编译脚本
+echo AIAgent Windows 简化编译脚本
 echo.
 echo 用法: %0 [选项]
 echo.
 echo 选项:
 echo   dynamic          - 编译动态链接版本（推荐用于开发）
-echo   static           - 编译静态链接版本
-echo   debug            - 编译调试版本
+echo   static           - 编译静态链接版本（仅基本功能）
+echo   auto             - 自动选择最佳编译方式（推荐）
 echo   package-windows  - 创建Windows发布包
 echo   clean            - 清理编译文件
 echo   help             - 显示此帮助信息
 echo.
 echo 推荐用法:
 echo   Windows开发:   %0 dynamic
-echo   Windows发布:   %0 static
+echo   Windows发布:   %0 auto
 echo.
 goto :eof
 
@@ -178,10 +213,10 @@ if "%1"=="dynamic" (
     call :compile "dynamic" "main"
 ) else if "%1"=="static" (
     call :compile "static" "main"
-) else if "%1"=="debug" (
-    call :compile "debug" "main"
+) else if "%1"=="auto" (
+    call :compile "auto" "main"
 ) else if "%1"=="package-windows" (
-    call :create_package "dynamic" "AIAgent-windows"
+    call :create_package "auto" "AIAgent-windows"
 ) else if "%1"=="clean" (
     call :clean
 ) else if "%1"=="help" (
