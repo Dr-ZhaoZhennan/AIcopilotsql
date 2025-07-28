@@ -1,0 +1,16 @@
+{
+  "models": [
+    {
+      "name": "deepseek-chat",
+      "url": "https://api.deepseek.com/chat/completions",
+      "api_key": "sk-36067cd796cd4895b310bfe9095de91a",
+      "model_id": "deepseek-chat"
+    },
+    {
+      "name": "deepseek-reasoner",
+      "url": "https://api.deepseek.com/chat/completions",
+      "api_key": "sk-36067cd796cd4895b310bfe9095de91a",
+      "model_id": "deepseek-reasoner"
+    }
+  ]
+}
