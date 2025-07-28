@@ -1,0 +1,22 @@
+SQL AI Copilot - 简化版
+版本：1.0.0-Simple
+编译时间：周一 2025/07/28 14:37:15.39
+目标平台：Windows x64
+编译器：MinGW-w64
+版本类型：简化版（仅依赖Windows系统库）
+
+功能特性：
+- GaussDB SQL优化分析
+- AI智能建议生成
+- 多轮交互问答
+- 执行计划分析
+
+依赖库：
+- winhttp.lib（Windows HTTP API）
+- libstdc++（C++标准库）
+
+简化版优势：
+- 无需额外依赖库
+- 更小的文件体积
+- 更好的兼容性
+- 更容易部署
