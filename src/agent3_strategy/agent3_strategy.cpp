@@ -1,4 +1,4 @@
-#include <agent3_strategy.h>
+#include "agent3_strategy.h"
 #include <sstream>
 
 OptimizationStrategy generate_strategy(const EnrichedDiagnosticReport& enriched) {

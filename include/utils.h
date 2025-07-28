@@ -22,4 +22,19 @@ namespace Utils {
     
     // 生成唯一ID
     std::string generate_uuid();
+    
+    // 检查字符串是否为数字
+    bool is_numeric(const std::string& str);
+    
+    // 字符串替换
+    std::string replace(const std::string& str, const std::string& from, const std::string& to);
+    
+    // 字符串连接
+    std::string join(const std::vector<std::string>& strings, const std::string& delimiter);
+    
+    // 获取当前时间戳
+    long long get_timestamp();
+    
+    // 格式化文件大小
+    std::string format_file_size(size_t bytes);
 }
