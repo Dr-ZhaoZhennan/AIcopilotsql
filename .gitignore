@@ -1,0 +1,47 @@
+# 编译生成的文件
+main
+obj/
+*.o
+*.a
+*.so
+
+# 临时文件
+*.log
+*.pid
+*.tmp
+*~
+*.bak
+*.swp
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE文件
+.vscode/
+.idea/
+*.sublime-*
+
+# 部署报告（临时文件）
+deployment_report.txt
+
+# Ollama运行时文件
+ollama.log
+ollama.pid
+
+# 临时API请求文件
+/tmp/api_request_*.json
+
+# 备份文件
+*.backup
+*.old
+
+# 测试文件
+test_*
+debug_*
+simple_*
+
+# 用户特定文件
+.env
+.env.local 
