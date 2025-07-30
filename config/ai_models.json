@@ -1,0 +1,77 @@
+{
+  "default_model": "qwen2.5-coder:7b",
+  "ollama_config": {
+    "host": "127.0.0.1",
+    "port": 11434,
+    "timeout": 30,
+    "retry_count": 3
+  },
+  "api_config": {
+    "timeout": 30,
+    "retry_count": 3,
+    "user_agent": "SQL-Optimizer/1.0"
+  },
+  "models": [
+    {
+      "name": "qwen2.5-coder:7b",
+      "type": "ollama",
+      "endpoint": "http://127.0.0.1:11434",
+      "description": "Qwen2.5 7B代码模型，支持中文SQL优化",
+      "parameters": {
+        "temperature": 0.7,
+        "max_tokens": 4096,
+        "top_p": 0.9
+      }
+    },
+    {
+      "name": "deepseek-coder:6.7b",
+      "type": "ollama",
+      "endpoint": "http://127.0.0.1:11434",
+      "description": "DeepSeek 6.7B代码生成模型",
+      "parameters": {
+        "temperature": 0.6,
+        "max_tokens": 4096,
+        "top_p": 0.9
+      }
+    },
+    {
+      "name": "deepseek-r1:7b",
+      "type": "ollama",
+      "endpoint": "http://127.0.0.1:11434",
+      "description": "DeepSeek R1 7B推理模型",
+      "parameters": {
+        "temperature": 0.5,
+        "max_tokens": 4096,
+        "top_p": 0.9
+      }
+    },
+    {
+      "name": "deepseek-chat",
+      "type": "api",
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "description": "DeepSeek Chat API模型",
+      "url": "https://api.deepseek.com/chat/completions",
+      "api_key": "sk-36067cd796cd4895b310bfe9095de91a",
+      "model_id": "deepseek-chat",
+      "parameters": {
+        "temperature": 0.7,
+        "max_tokens": 4096,
+        "top_p": 0.9
+      }
+    },
+    {
+      "name": "deepseek-reasoner",
+      "type": "api",
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "description": "DeepSeek Reasoner API模型",
+      "url": "https://api.deepseek.com/chat/completions",
+      "api_key": "sk-36067cd796cd4895b310bfe9095de91a",
+      "model_id": "deepseek-reasoner",
+      "parameters": {
+        "temperature": 0.5,
+        "max_tokens": 4096,
+        "top_p": 0.9
+      }
+    }
+  ]
+}
